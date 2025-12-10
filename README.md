@@ -146,6 +146,112 @@ Photography is contextual. A horizon tilt is bad in landscapes but creative in p
 **Free Tier:** 5 turns per session
 **Upgrade:** Unlimited turns for continued learning
 
+### 🧠 Transparent Reasoning: Gemini 3 Pro's Thinking Process
+<img width="1024" height="1024" alt="reasoning-process" src="https://github.com/user-attachments/assets/5e7c4988-58d4-4e8d-a924-43aa7ef3d21d" />
+
+
+**Beyond Scores: See the AI's Work**
+
+Most AI analysis tools give you results. Photography Coach AI shows you *how* the AI thinks.
+
+**What You Get:**
+
+When you upload a photo, Gemini 3 Pro doesn't just output scores—it exposes its complete reasoning process:
+
+**1. Observations**
+The AI's initial visual scan of your photo, noting composition, lighting, and quality immediately visible. No opinions yet—just what it saw first.
+
+**2. Reasoning Steps**
+Step-by-step evaluation against photography principles (rule of thirds, lighting theory, technical guidelines, etc.). This is the "why" behind every critique.
+
+**3. Priority Fixes**
+Ranked improvements ordered by impact:
+- **Critical** – Major errors that significantly hurt the photo
+- **Moderate** – Noticeable distractions or missed opportunities
+- **Minor** – Polish details that refine an already-good photo
+
+**How It Works:**
+
+```
+Upload Photo (0ms)
+    ↓
+Frontend Processing (100ms)
+    ↓
+Send to Gemini API (200ms)
+    ↓
+Gemini Analyzes with Extended Thinking (2-3 seconds)
+    ├─ Stream 1: Observations (What did I notice?)
+    ├─ Stream 2: Reasoning Steps (Why did I notice that?)
+    └─ Stream 3: Priority Fixes (How should this be fixed?)
+    ↓
+Parse JSON Response (50ms)
+    ↓
+Render All 5 Tabs (instant)
+```
+
+**Why This Matters:**
+
+Photography coaching is about understanding *why* something works or doesn't work. By exposing Gemini's reasoning, you learn not just what to fix, but the *principles* behind the feedback.
+
+Instead of: "Your horizon is crooked" (feedback only)  
+You get: "Your horizon is 3° tilted clockwise, creating tension. Straightening it using your camera's grid overlay would improve stability and follow the rule of thirds." (feedback + principle + actionable method)
+
+**In the Detailed Analysis Tab:**
+
+Click the "Detailed Analysis" tab in the dashboard to expand the complete thinking process. You'll see:
+- Observations formatted as bullet points
+- Reasoning steps as numbered logical progression
+- Priority fixes ranked by impact with visual severity indicators
+- Technical deep dive into composition, lighting, and technique
+- Spatial issues marked on your photo with bounding boxes
+
+**The Learning Outcome:**
+
+This transparency teaches you photography principles in context. Rather than memorizing rules, you see how a professional AI applies them to *your* specific photo—accelerating your learning curve dramatically.
+
+**Technical Note:**
+
+Gemini 3 Pro's extended thinking feature captures the AI's internal reasoning at inference time. Photography Coach AI extracts and structures this thinking into observations, reasoning steps, and priority fixes—making the usually-hidden AI decision-making process visible and educational.
+
+---
+
+### 🎛 AI Enhancement: From Feedback to Improved Photo
+<img width="1024" height="1024" alt="before-after" src="https://github.com/user-attachments/assets/b4b451d0-f11b-48dc-9ae7-4d383bc46388" />
+
+**Not just “make it better” — apply specific fixes.**
+
+Most AI image tools are black boxes: you ask for “better lighting” and hope for the best. Photography Coach AI takes a different path by tying **image generation directly to the structured critique**.
+
+**How it works:**
+
+1. **Analyze first.**
+   Gemini 3 Pro analyzes your original photo and produces:
+   - 5 dimension scores (Composition, Lighting, Creativity, Technique, Subject Impact)
+   - A list of strengths and improvement opportunities
+   - A structured `improvements[]` list with concrete edits (for example: “lift shadows on subject”, “reduce highlight clipping in the sky”, “remove background distraction on the right edge”).
+
+2. **Extract targeted improvements.**
+   The app takes the top improvements from the analysis and builds a precise instruction set for the image model, rather than vague prompts. This keeps the subject and framing intact while focusing on technical and aesthetic fixes.
+
+3. **Call Gemini 3 Pro Image Generation.**
+   The original photo (base64) plus the `improvements[]` list are sent to the image model. The model returns a corrected image that:
+   - Preserves the original subject and composition.
+   - Adjusts exposure, contrast, and color balance.
+   - Optionally cleans up small distractions in the frame.
+
+4. **Blend and compare interactively.**
+   In the **AI Enhancement** tab:
+   - A slider lets you blend between the original and AI-corrected image.
+   - Labels clearly indicate “Original” and “AI-Corrected”.
+   - You can download the improved version if you like the result.
+
+**Why this matters for learning:**
+
+Instead of a magic “enhance” button, you see the full chain:
+
+> Critique → Structured improvements → Image generation → Visual
+
+---
 
 ### 📊 Production-Grade Features
 
