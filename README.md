@@ -80,37 +80,42 @@ Open [http://localhost:5173](http://localhost:5173) → Upload a photo → Start
 - **Multi-Turn Dialogue** – Interactive mentor chat with full conversation history
 
 ### 🧠 Intelligent Coaching
-<img width="2464" height="1728" alt="skill-progression" src="https://github.com/user-attachments/assets/f521ba66-a383-4d00-a71f-e9dedd78b580" />
+<img width="1024" height="1024" alt="skill-progression" src="https://github.com/user-attachments/assets/a7268b0e-f89b-4823-b60f-76226a1a0915" />
 
-**Adaptive Feedback**
-The AI doesn't treat all photographers the same. It adapts its coaching based on your detected skill level:
+**Adaptive Feedback Based on Photo Quality**
 
-**Beginner Level** (0-5 analyses)
+Photography Coach AI detects your current skill level from each individual photo and adapts its coaching:
+
+**Beginner Level** (Photos scoring < 5.5/10 average)
 - Focus on fundamentals: Rule of thirds, exposure, composition basics
 - Encouragement-focused feedback
 - Actionable, step-by-step guidance
 
-**Intermediate Level** (5-20 analyses)
+**Intermediate Level** (Photos scoring 5.5-7.5/10 average)
 - Explore nuanced techniques: Leading lines, fill light, color theory
 - Balance confidence-building with advanced concepts
 - Reference photography principles and industry standards
 
-**Advanced Level** (20+ analyses)
+**Advanced Level** (Photos scoring ≥ 7.5/10 average)
 - Push creative boundaries: Mood, storytelling, signature style
 - Technical precision expected
 - Challenge assumptions and explore artistic choices
 
-**Continuous Learning**
-Every analysis teaches the system more about your style and preferences. Over time, feedback becomes increasingly personalized and relevant to your specific photographic goals.
+**How It Works**
 
-**The Result?**
-Photographers typically see measurable improvement within 10-15 analyses as they internalize feedback and develop better habits.
+Each photo analysis:
+1. Calculates average score across 5 dimensions (composition, lighting, creativity, technique, subject impact)
+2. Compares to thresholds (5.5 and 7.5) to detect current skill level
+3. Generates personalized "Next Skills to Master" recommendations
+4. Adapts mentor chat responses based on detected level
 
-- **Transparent Reasoning** – See the AI's thought process, not just scores
-- **Spatial Feedback** – Bounding boxes pinpoint issues on your actual photo
-- **Contextual Guidance** – References your photo's settings, detected flaws, and strengths
-- **Skill Progression** – Photographer level badge (Beginner/Intermediate/Advanced)
-- **Adaptive Recommendations** – "Next Skills to Master" based on weakness areas
+**Why This Approach**
+
+Unlike systems that require 20+ photos to track progression, this app gives **immediate adaptive feedback** on any single photo. A beginner's landscape might score 4/10 (triggering beginner coaching), while their portrait might score 8/10 (triggering advanced coaching)—and the system adjusts accordingly.
+
+**Learning Outcome**
+
+This demonstrates that skill detection doesn't require historical tracking. Gemini's vision analysis is sophisticated enough to infer skill level from the photo quality itself, enabling real-time personalization in a single-session app.
 
 ### 💬 Mentor Chat (5-Turn Conversation)
 
