@@ -397,37 +397,59 @@ This diagram shows:
 
 ### 1. Context Caching (75% Cost Reduction)
 
-<img width="2912" height="1440" alt="arch-05-caching" src="https://github.com/user-attachments/assets/d4b08c14-ba76-484a-ac34-779ba3643031" />
+
+<img width="2816" height="1536" alt="arch-05-caching" src="https://github.com/user-attachments/assets/4a1c9be7-35ac-4f86-840b-d4f7532e4cba" />
 
 
-This diagram shows:
+**How Context Caching WOULD Work:**
 
-**Request 1 (Cache Miss):**
-- Input: Photo (base64) + Photography Principles (32KB+) = 3,000 tokens
-- Output: Analysis (500 tokens)
-- Cost: ~$0.00325
-- Result: Principles cached for next 4 minutes (up to 50 requests)
+This diagram shows the architectural pattern for request caching at enterprise scale. Here's the flow:
 
-**Request 2+ (Cache Hit):**
-- Input: Photo (base64) + CACHED principles = 2,500 tokens
-- Cached tokens billed at 90% discount: $0.000187 per token
-- New tokens billed at standard rate: $0.000583 per token
-- Output: Analysis (500 tokens)
-- Cost: ~$0.00201 (38% savings!)
-- Time: Same speed, no latency penalty
+**Request 1 (Cache Miss - First Request):**
+- Input: Photo (base64) + Photography Principles = ~7,500 tokens total
+- Caching requirement: Principles must be ≥32KB (static content)
+- Result: Principles eligible for caching
+- Cost: Full rate (no discount yet)
+- Status: ⚠️ **Not activated in this app** (request too small)
 
-**Cumulative Impact:**
-- 10 photos: 34% savings
-- 100 photos: 38% savings
-- 1,000 photos: 38% savings
-- 10,000 photos: 38% savings (projected at scale)
+**Request 2+ (Cache Hit - Hypothetical at Scale):**
+- Input: Photo (base64) + CACHED principles = ~5,000 new tokens
+- Cached tokens: ~2,500 (reused from cache)
+- Pricing: Cached tokens @ $0.01875/1M vs. input tokens @ $3.50/1M
+- Discount: 90% reduction on cached token cost
+- Result: Cost reduction IF request met 32KB threshold
+- Status: ⚠️ **Would activate at enterprise scale** (not now)
 
-**Why This Works:**
-- Photography principles are static (don't change per photo)
-- Gemini caches them after first request
-- Subsequent requests reuse cached principles
-- Massive cost reduction with zero quality loss
-- At enterprise scale: thousands of dollars in savings per month
+**When This Matters (Scale Simulation):**
+
+| Scale | Requests | Activation | Per-Request Cost | Total Savings |
+|-------|----------|------------|-----------------|---------------|
+| Single photo | 1 | ❌ No | $0.00204 | $0 |
+| 10 photos | 10 | ❌ No | $0.00204 ea | $0 |
+| 100 photos | 100 | ❌ No | $0.00204 ea | $0 |
+| 1,000 photos | 1,000 | ✅ Yes* | ~$0.00175 ea | ~$0.29 |
+| 10,000 photos | 10,000 | ✅ Yes* | ~$0.00175 ea | ~$2.90 |
+
+*Theoretical only - requires infrastructure to support true caching
+
+**Why This Architecture Matters:**
+
+1. **Static Content**: Photography principles never change, perfect for caching
+2. **Cost Leverage**: Small prefix size but high token reuse = big savings at scale
+3. **Threshold**: Gemini requires 32KB+ minimum; this app is ~7.5KB (below threshold)
+4. **Scale Economics**: Feature only becomes valuable above ~500 repeated requests
+
+**Educational Value:**
+
+This project demonstrates:
+- How LLM prompt architecture can be optimized for scale
+- Why infrastructure decisions matter more than code
+- Cache efficiency calculations for business planning
+- The difference between "could work" and "is implemented"
+
+**Current Status:**
+
+Photography Coach AI simulates the caching economics to teach these concepts, but doesn't activate actual Gemini context caching (request size below threshold). This makes it an excellent educational tool for understanding real-world LLM infrastructure trade-offs.
 
 ### 2. Image Compression
 
