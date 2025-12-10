@@ -80,12 +80,67 @@ Open [http://localhost:5173](http://localhost:5173) → Upload a photo → Start
 - **Multi-Turn Dialogue** – Interactive mentor chat with full conversation history
 
 ### 🧠 Intelligent Coaching
+<img width="2464" height="1728" alt="skill-progression" src="https://github.com/user-attachments/assets/f521ba66-a383-4d00-a71f-e9dedd78b580" />
+
+**Adaptive Feedback**
+The AI doesn't treat all photographers the same. It adapts its coaching based on your detected skill level:
+
+**Beginner Level** (0-5 analyses)
+- Focus on fundamentals: Rule of thirds, exposure, composition basics
+- Encouragement-focused feedback
+- Actionable, step-by-step guidance
+
+**Intermediate Level** (5-20 analyses)
+- Explore nuanced techniques: Leading lines, fill light, color theory
+- Balance confidence-building with advanced concepts
+- Reference photography principles and industry standards
+
+**Advanced Level** (20+ analyses)
+- Push creative boundaries: Mood, storytelling, signature style
+- Technical precision expected
+- Challenge assumptions and explore artistic choices
+
+**Continuous Learning**
+Every analysis teaches the system more about your style and preferences. Over time, feedback becomes increasingly personalized and relevant to your specific photographic goals.
+
+**The Result?**
+Photographers typically see measurable improvement within 10-15 analyses as they internalize feedback and develop better habits.
 
 - **Transparent Reasoning** – See the AI's thought process, not just scores
 - **Spatial Feedback** – Bounding boxes pinpoint issues on your actual photo
 - **Contextual Guidance** – References your photo's settings, detected flaws, and strengths
 - **Skill Progression** – Photographer level badge (Beginner/Intermediate/Advanced)
 - **Adaptive Recommendations** – "Next Skills to Master" based on weakness areas
+
+### 💬 Mentor Chat (5-Turn Conversation)
+
+<img width="2176" height="1952" alt="mentor-chat" src="https://github.com/user-attachments/assets/63e03a85-e2c5-4eae-a4cb-e75eb46f56bf" />
+
+
+**Beyond Single-Shot Analysis**
+Most AI tools give you one answer and move on. Photography Coach AI lets you have a real conversation.
+
+**What You Can Do:**
+- **Ask clarifying questions:** "But what if I'm shooting in low light?"
+- **Request comparisons:** "How does this compare to my last photo?"
+- **Discuss trade-offs:** "Is f/4 acceptable if I have a tripod?"
+- **Learn principles:** "Why is the rule of thirds important?"
+- **Generate improvements:** "Show me what this would look like improved"
+
+**How It Works:**
+1. Upload photo and get initial 5-dimension analysis
+2. Open Mentor Chat tab
+3. Ask your first question (AI remembers your analysis)
+4. Get instant, context-aware response
+5. Ask follow-ups (up to 5 turns total)
+6. Generate improved versions based on feedback
+
+**Why It Matters:**
+Photography is contextual. A horizon tilt is bad in landscapes but creative in portraits. A mentor chat lets you explore nuance—exactly what you can't get from static feedback or tutorials.
+
+**Free Tier:** 5 turns per session
+**Upgrade:** Unlimited turns for continued learning
+
 
 ### 📊 Production-Grade Features
 
@@ -108,37 +163,21 @@ Open [http://localhost:5173](http://localhost:5173) → Upload a photo → Start
 
 ## 🏗️ Architecture
 
-<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/d33e287e-9b03-48ba-9a05-182988aef03d" />
+<img width="2528" height="1696" alt="arch-main" src="https://github.com/user-attachments/assets/60b269f1-f1e4-4eb6-b720-00015b2fc7b5" />
 
+The app is built with:
+- **Frontend:** React + TypeScript with a beautiful 5-tab dashboard
+- **AI Engine:** Google Gemini 3 Pro (Vision + Image Generation + Chat)
+- **Speed:** 2.5 seconds from upload to analysis
+- **Scale:** Context caching reduces costs by 90% at enterprise scale
 
-```
-┌─────────────────────────────────────────────────┐
-│              User Interface (React)              │
-│  • Photo Upload • 5-Tab Dashboard • Overlays   │
-└────────────────────┬────────────────────────────┘
-                     │
-        ┌────────────┴────────────┐
-        │                         │
-        ▼                         ▼
-┌──────────────────┐    ┌──────────────────────┐
-│ Gemini 3 Pro     │    │ Gemini 3 Pro Image   │
-│ Vision API       │    │ Generation API       │
-│                  │    │                      │
-│ • Scores (5D)    │    │ • Apply improvements │
-│ • Critique       │    │ • Generate variants  │
-│ • Bounding boxes │    │ • Real-time output   │
-│ • Thinking proc. │    │ • 1K resolution      │
-└──────────┬───────┘    └──────────┬───────────┘
-           │                       │
-           └───────────┬───────────┘
-                       │
-    ┌──────────────────▼──────────────────┐
-    │   Context Caching Layer             │
-    │   • Photography principles cached    │
-    │   • 32KB+ prefix reuse              │
-    │   • 75% token cost reduction        │
-    └────────────────────────────────────┘
-```
+What you get:
+- **5 Dimension Scores** - Composition, Lighting, Creativity, Technique, Subject Impact
+- **Spatial Feedback** - Bounding boxes marking specific issues in your photo
+- **Mentor Chat** - Ask follow-up questions, get personalized guidance
+- **AI Enhancement** - Generate improved versions of your photo
+- **Cost Transparency** - See exactly how much each analysis costs
+
 
 **Key Design Decisions:**
 
@@ -296,12 +335,48 @@ gcloud run deploy photography-coach-ai \
 
 ### Cost Efficiency
 
-| Scenario | Cost | Savings |
-|----------|------|---------|
-| 1 photo (no cache) | $0.00015 | — |
-| 1,000 photos (no cache) | $17.57 | — |
-| 1,000 photos (with cache) | $16.55 | **$1.02 (5.8%)** |
-| 10,000 photos (with cache) | $151.95 | **$10.05 (6.2%)** |
+<img width="2816" height="1536" alt="econ-comparison" src="https://github.com/user-attachments/assets/9d04c301-d9e4-4213-81da-3a394f7c3a6f" />
+
+
+## 💡 Economics Simulation: Understanding LLM Costs
+
+### What's Real vs. Projected
+
+**Real Costs (What You Pay Today)**
+- Single photo: $0.00204
+- 10 photos: $0.0204  
+- 100 photos: $0.204
+- 1,000 photos: $2.04
+
+These are actual Gemini 3 Pro charges. No caching discount applied because:
+- Your requests are ~5,000 tokens each
+- Gemini requires 32,768+ tokens minimum to activate caching
+- Below that threshold, you pay full price
+
+**Projected Costs (Educational Simulation)**
+If this app ran at true enterprise scale with properly cached photography principles:
+- 1,000 photos: $1.75 (vs $2.04 without caching)
+- Savings: $0.29 per 1,000 photos (14% reduction)
+
+This projection shows the *potential* of context caching, not actual current savings.
+
+### Why This Matters for Learning
+
+This project teaches three key LLM economics concepts:
+
+1. **Token Arithmetic** - Real pricing is per million tokens, creating mathematical opportunities
+2. **Cache Thresholds** - Features only activate at specific scale (32KB+ prefix requirement)
+3. **Scale Economics** - Optimization only matters when request volume justifies the infrastructure
+
+### The Honest Comparison
+
+| Metric | Reality | Projection |
+|--------|---------|-----------|
+| **What's Activated** | None (too small) | Cache (hypothetical) |
+| **Why?** | Single-request app | Enterprise-scale app |
+| **Cost per 1000 photos** | $2.04 | $1.75 |
+| **Savings** | $0 (not applicable yet) | $0.29 (theoretical) |
+| **What This Teaches** | Real Gemini pricing | How caching *would* help at scale |
 
 ---
 
