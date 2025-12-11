@@ -1,4 +1,6 @@
 # 📷 Photography Coach AI – Gemini 3 Pro Edition
+<img width="1024" height="800" alt="thumbnail" src="https://github.com/user-attachments/assets/c8da63e0-70d1-40cb-932a-cd4332deda48" />
+
 
 [![Gemini 3 Pro](https://img.shields.io/badge/Powered%20by-Gemini%203%20Pro-green?style=flat-square&logo=google)](https://ai.google.dev)
 [![React](https://img.shields.io/badge/React-18%2B-blue?style=flat-square&logo=react)](https://react.dev)
