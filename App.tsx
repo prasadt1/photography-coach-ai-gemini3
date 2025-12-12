@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
-import { Camera, Sparkles, Cpu, Target, Coins, ArrowRight, PlayCircle, Zap, Image as ImageIcon, Lock, ChevronRight, Github } from 'lucide-react';
+import { Camera, Sparkles, Cpu, Target, Coins, ArrowRight, PlayCircle, Zap, Image as ImageIcon, Lock, ChevronRight, Github, MonitorPlay } from 'lucide-react';
 import PhotoUploader from './components/PhotoUploader';
 import AnalysisResults, { TabId } from './components/AnalysisResults';
+import { PresentationSlides } from './components/PresentationSlides';
 import { analyzeImage } from './services/geminiService';
 import { PhotoAnalysis, AppState, SessionCostMetric, MentorChatState } from './types';
 
@@ -46,6 +48,8 @@ function App() {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<PhotoAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showSlides, setShowSlides] = useState(false);
+  const [initialSlide, setInitialSlide] = useState(1);
   
   // Lifted state for results tab to allow external control from header
   const [activeResultTab, setActiveResultTab] = useState<TabId>('overview');
@@ -57,7 +61,7 @@ function App() {
   const [mentorChatState, setMentorChatState] = useState<MentorChatState>({ messages: [], isLoading: false });
 
   // NOTE: We do not check for API keys on mount or interaction to avoid forcing login redirects.
-  // We rely on the service layer to use shared credentials if available in the published app environment.
+  // We rely on the service layer to use shared credentials or fail gracefully with a specific error code.
 
   const handleImageSelected = async (base64: string, mimeType: string) => {
     // We proceed directly to analysis. 
@@ -139,6 +143,22 @@ function App() {
     setError(null);
     setMentorChatState({ messages: [], isLoading: false });
   };
+  
+  // Handler to start presentation from beginning
+  const startPresentation = () => {
+    setInitialSlide(1);
+    setShowSlides(true);
+  };
+
+  // Handler to show architecture slide (Slide 3) directly from app
+  const showArchitectureSlide = () => {
+    setInitialSlide(3);
+    setShowSlides(true);
+  };
+
+  if (showSlides) {
+    return <PresentationSlides onExit={() => setShowSlides(false)} initialSlide={initialSlide} />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 font-sans selection:bg-brand-500/30">
@@ -153,15 +173,15 @@ function App() {
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-3">
                 <span className="text-xl md:text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-300 tracking-tight">
-                  Photography Coach AI
+                  AI Photography Coach
                 </span>
                 <div className="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-purple-600 px-3 py-1 rounded-full shadow-lg shadow-purple-500/20 border border-white/10">
                    <Sparkles className="w-3 h-3 text-white fill-white" />
-                   <span className="text-[11px] font-bold text-white tracking-wide uppercase">Powered by Gemini 3 Pro</span>
+                   <span className="text-[11px] font-bold text-white tracking-wide uppercase">Gemini 3 Pro</span>
                 </div>
               </div>
               <span className="text-[11px] md:text-xs text-brand-400 font-semibold tracking-wide hidden sm:block uppercase opacity-90">
-                Spatial Critique &bull; AI Image Generation &bull; Context Caching
+                AI Photography Mentor &bull; Spatial Critique &bull; Restoration
               </span>
             </div>
           </div>
@@ -195,8 +215,11 @@ function App() {
               
               <h1 className="text-3xl md:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight relative z-10 drop-shadow-sm px-4">
                 Professional Photography <br />
-                Coaching, <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400">Powered by AI</span>
+                Coaching, <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400">Reimagined.</span>
               </h1>
+              <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                The <span className="font-semibold text-slate-300">AI Photography Coach</span> uses Gemini 3 Pro to analyze your photos, visualize mistakes, and generate corrections in real-time.
+              </p>
 
               {/* Feature Badges */}
               <div className="flex flex-wrap justify-center gap-3 md:gap-4 relative z-10 px-4">
@@ -292,6 +315,7 @@ function App() {
             onTabChange={setActiveResultTab}
             mentorChatState={mentorChatState}
             setMentorChatState={setMentorChatState}
+            onShowArchitecture={showArchitectureSlide}
           />
         )}
 
@@ -354,16 +378,25 @@ function App() {
       </main>
 
       <footer className="border-t border-slate-800 mt-12 py-8 flex flex-col items-center gap-4 text-slate-600 text-sm">
-        <p>&copy; {new Date().getFullYear()} Photography Coach AI. Built with Google Gemini 3 Pro.</p>
-        <a 
-          href="https://github.com/prasadt1/photography-coach-ai-gemini3" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:text-slate-400 transition-colors"
-        >
-          <Github className="w-4 h-4" />
-          <span>View Source on GitHub</span>
-        </a>
+        <p>&copy; {new Date().getFullYear()} AI Photography Coach. Built with Google Gemini 3 Pro.</p>
+        <div className="flex gap-4">
+          <a 
+            href="https://github.com/prasadt1/photography-coach-ai-gemini3" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-slate-400 transition-colors"
+          >
+            <Github className="w-4 h-4" />
+            <span>View Source on GitHub</span>
+          </a>
+          <button 
+            onClick={startPresentation}
+            className="flex items-center gap-2 hover:text-emerald-400 transition-colors"
+          >
+            <MonitorPlay className="w-4 h-4" />
+            <span>Presentation Mode</span>
+          </button>
+        </div>
       </footer>
     </div>
   );

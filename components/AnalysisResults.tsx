@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { PhotoAnalysis, SessionCostMetric, MentorChatState, MentorMessage } from '../types';
 import SpatialOverlay from './SpatialOverlay';
@@ -21,7 +22,7 @@ import {
   Camera, Zap, Layout, Eye, Star, ChevronRight, Aperture, Clock, Gauge, Target,
   ScanEye, Wand2, Loader2, Download, MoveHorizontal, Coins, Info, TrendingDown,
   LayoutDashboard, Map, PiggyBank, History, Brain, ChevronDown, ChevronUp, ListChecks, ArrowUpRight,
-  MessageCircle, Send, User, Bot
+  MessageCircle, Send, User, Bot, Server, MousePointerClick
 } from 'lucide-react';
 
 export type TabId = 'overview' | 'details' | 'mentor' | 'enhance' | 'economics';
@@ -35,6 +36,7 @@ interface AnalysisResultsProps {
   onTabChange: (tab: TabId) => void;
   mentorChatState: MentorChatState;
   setMentorChatState: React.Dispatch<React.SetStateAction<MentorChatState>>;
+  onShowArchitecture: () => void;
 }
 
 const ScoreCard: React.FC<{ label: string; score: number; icon: React.ReactNode }> = ({ label, score, icon }) => {
@@ -256,7 +258,8 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({
   activeTab,
   onTabChange,
   mentorChatState,
-  setMentorChatState
+  setMentorChatState,
+  onShowArchitecture
 }) => {
   const [showOverlays, setShowOverlays] = useState(false);
   
@@ -525,9 +528,9 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({
                   <div className="bg-slate-800/40 rounded-3xl p-4 md:p-6 border border-slate-700 flex items-center justify-center min-h-[250px] md:min-h-[300px]">
                     <div className="w-full h-[220px] md:h-[250px]">
                       <ResponsiveContainer width="100%" height="100%">
-                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="65%" data={chartData}>
                           <PolarGrid stroke="#475569" />
-                          <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 10 }} />
+                          <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 11 }} />
                           <PolarRadiusAxis angle={30} domain={[0, 10]} tick={false} axisLine={false} />
                           <Radar
                             name="Score"
@@ -722,10 +725,19 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({
 
                   {hasBoundingBoxes && (
                     <div className="pt-6">
-                      <h3 className="text-xl font-bold text-slate-100 mb-4 flex items-center gap-2">
-                        <Map className="w-5 h-5 text-slate-400" />
-                        Detected Spatial Issues
-                      </h3>
+                      <div className="mb-4">
+                        <h3 className="text-xl font-bold text-slate-100 mb-2 flex items-center gap-2">
+                          <Map className="w-5 h-5 text-slate-400" />
+                          Detected Spatial Issues
+                        </h3>
+                        <div className="flex items-start gap-2 text-sm text-slate-400 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                           <MousePointerClick className="w-4 h-4 text-brand-400 mt-0.5 flex-shrink-0" />
+                           <p>
+                             Gemini has mapped specific feedback directly onto your photo. 
+                             <strong className="text-brand-400 ml-1">Hover over the colored boxes on the left</strong> to read detailed tooltips about each issue.
+                           </p>
+                        </div>
+                      </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {analysis.boundingBoxes!.map((box, i) => (
                            <div key={i} className={`p-4 rounded-xl border ${
@@ -1009,6 +1021,18 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({
                      </div>
                    </div>
                 )}
+                
+                {/* DEMO TRANSITION 2: View Architecture */}
+                <div className="flex justify-center pt-4">
+                   <button 
+                     onClick={onShowArchitecture}
+                     className="group flex items-center gap-2 px-6 py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded-full hover:bg-slate-700 hover:text-white hover:border-blue-500/50 transition-all duration-300"
+                   >
+                     <Server className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
+                     View Architecture & ROI
+                     <ChevronRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                   </button>
+                </div>
 
                 {/* Current Analysis Details Card */}
                 <div className="bg-slate-900/50 rounded-3xl border border-slate-700/50 backdrop-blur-sm relative group">
