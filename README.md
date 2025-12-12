@@ -1,8 +1,8 @@
 # 📷 Photography Coach AI – Gemini 3 Pro Edition
 
-<p align="left">
-  <img src="https://github.com/user-attachments/assets/c8da63e0-70d1-40cb-932a-cd4332deda48" alt="AI Photography Coach Banner" width="50%">
-</p>
+
+<img width="1024" height="318" alt="image" src="https://github.com/user-attachments/assets/e2a38c0e-7a6c-49ef-8fb6-2cd870ea6e36" /><br/>
+
 
 [![Launch Live App](https://img.shields.io/badge/Launch_Live_App-Google_AI_Studio-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.studio/apps/drive/1v2uJziWHPOHRES4EmmWXavydKZAe8ary?fullscreenApplet=true)
 [![Gemini 3 Pro](https://img.shields.io/badge/Powered%20by-Gemini%203%20Pro-green?style=flat-square&logo=google)](https://ai.google.dev)
