@@ -3,15 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Photography Coach | Gemini 3 Pro</title>
+    <title>LENS - Photography Coach | Gemma 4 · Local</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="LENS" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              sans: ['Outfit', 'system-ui', 'sans-serif'],
+              serif: ['Source Serif 4', 'Georgia', 'serif'],
             },
             colors: {
               brand: {
@@ -25,6 +31,18 @@
                 700: '#15803d',
                 800: '#166534',
                 900: '#14532d',
+              },
+              terracotta: {
+                50: '#fef7f4',
+                100: '#fce8e1',
+                200: '#f9cfc3',
+                300: '#f4ad96',
+                400: '#eb8464',
+                500: '#e06442',
+                600: '#cd4a2d',
+                700: '#ab3b24',
+                800: '#8c3323',
+                900: '#742e22',
               }
             },
             animation: {
@@ -52,14 +70,63 @@
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0f172a; 
+        background: #0f172a;
       }
       ::-webkit-scrollbar-thumb {
-        background: #334155; 
+        background: #334155;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #475569; 
+        background: #475569;
+      }
+
+      /* Emil Kowalski design engineering: Button tactile feedback */
+      button:not(:disabled):active {
+        transform: scale(0.97);
+      }
+
+      /* Emil: Custom easing for smooth UI animations */
+      :root {
+        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+        --spring: cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      /* Emil: Respect user motion preferences */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* Emil: Gate hover effects for pointer devices only */
+      @media (hover: hover) and (pointer: fine) {
+        .hover-lift:hover {
+          transform: translateY(-2px);
+        }
+        .hover-glow:hover {
+          box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
+        }
+      }
+
+      /* Emil: Smooth focus transitions */
+      button, a, input {
+        transition: transform 150ms var(--spring),
+                    box-shadow 150ms var(--spring),
+                    background-color 150ms var(--spring),
+                    border-color 150ms var(--spring),
+                    opacity 150ms var(--spring);
+      }
+
+      /* Emil: Cards and containers use slower, smoother transitions */
+      .card-transition {
+        transition: transform 250ms var(--ease-out-expo),
+                    box-shadow 250ms var(--ease-out-expo);
       }
     </style>
   <script type="importmap">
@@ -74,10 +141,16 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
